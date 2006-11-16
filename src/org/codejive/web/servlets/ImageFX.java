@@ -6,6 +6,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.logging.Logger;
 
 import javax.imageio.ImageIO;
 import javax.servlet.ServletException;
@@ -22,8 +23,10 @@ import org.codejive.imagefx.ImageProcessorException;
  */
 public class ImageFX extends javax.servlet.http.HttpServlet {
 	
+	private static Logger logger = Logger.getLogger(ImageFX.class.getName());
 	private static AppConfig config = AppConfig.getInstance();
 	
+	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// Get next path element (after servlet context)
 		String fullPath = request.getPathInfo();
@@ -34,7 +37,7 @@ public class ImageFX extends javax.servlet.http.HttpServlet {
 			
 			File imageFile = new File(getServletContext().getRealPath(imagePath));
 			if (!imageFile.exists()) {
-				config.getLogger().info("ImageProcessor::doGet - '" + imageFile.getAbsolutePath() + "' does not exist");
+				logger.info("ImageProcessor::doGet - '" + imageFile.getAbsolutePath() + "' does not exist");
 				response.sendError(404);
 				return;
 			}
@@ -48,7 +51,7 @@ public class ImageFX extends javax.servlet.http.HttpServlet {
 			// Check if a cached version of our processed image exists and if it's up-to-date
 			boolean updated = (!outFile.exists() || (imageFile.lastModified() > outFile.lastModified()));
 			if (updated) {
-				config.getLogger().info("ImageProcessor::doGet - Performing '" + chainName + "' on '" + imagePath + "'");
+				logger.info("ImageProcessor::doGet - Performing '" + chainName + "' on '" + imagePath + "'");
 	
 				BufferedImage image = ImageIO.read(imageFile);
 				if (image == null) {

@@ -5,6 +5,7 @@ package org.codejive.web.filters;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.logging.Logger;
 
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
@@ -14,7 +15,6 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 
-import org.codejive.common.config.AppConfig;
 import org.codejive.common.config.ConfigFiles;
 import org.codejive.common.config.ConfigurationException;
 import org.codejive.common.xml.DomValueReader;
@@ -36,7 +36,7 @@ public class ObjectInjector implements Filter {
 	public static final String NAMESPACE = "http://www.codejive.org/NS/web/xoil";
 	public static final SimpleNamespaceContext CONTEXT = new SimpleNamespaceContext("x", NAMESPACE);
 
-	private static AppConfig config = AppConfig.getInstance();
+	private static Logger logger = Logger.getLogger(ObjectInjector.class.getName());
 	
 	public ObjectInjector() {
 		filterConfig = null;
@@ -51,7 +51,7 @@ public class ObjectInjector implements Filter {
 		
 		// Check if there is a configuration file associated with this URL
 		String url = request.getServletPath();
-		config.getLogger().info("Incoming URL: " + url);
+		logger.info("Incoming URL: " + url);
 		String configUrl = url + CONFIG_FILE_EXTENSION;
 		String configPath = filterConfig.getServletContext().getRealPath(configUrl);
 		File configFile = new File(configPath);
@@ -93,7 +93,7 @@ public class ObjectInjector implements Filter {
 					String name = reader.value("@name");
 					String className = reader.value("@class");
 					String context = reader.value("@context");
-					config.getLogger().info("Block: " + name + ", " + className + ", " + context);
+					logger.info("Block: " + name + ", " + className + ", " + context);
 					// Check if the block already exists in the context
 					if (getAttribute(_request, name) == null) {
 						Object block;
@@ -138,7 +138,7 @@ public class ObjectInjector implements Filter {
 						} else if ("page".equalsIgnoreCase(context) || (context == null)) {
 							_request.setAttribute(name, block);
 						}
-						config.getLogger().info("Created: " + block);
+						logger.info("Created: " + block);
 					}
 				}
 			}
