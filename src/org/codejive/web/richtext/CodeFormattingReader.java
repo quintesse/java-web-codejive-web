@@ -7,10 +7,8 @@ import javax.xml.stream.XMLStreamConstants;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 
-import org.codejive.common.CodejiveException;
 import org.codejive.common.xml.DomWriter;
 import org.codejive.common.xml.InjectingReader;
-import org.codejive.common.xml.XmlHelper;
 import org.codejive.common.xml.XmlInputFactory;
 import org.codejive.common.xml.XmlOutputFactory;
 import org.codejive.web.filters.ObjectInjector;
