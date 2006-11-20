@@ -1,5 +1,5 @@
 /**
- * [codejive-common] Codejive commons package
+ * [codejive-web] Codejive web package
  * 
  * Copyright (C) 2006 Tako Schotanus
  * 
